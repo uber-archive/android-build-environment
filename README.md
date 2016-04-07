@@ -19,7 +19,7 @@ Android Build on Docker Container
 
     $ docker build -t uber/android-build-environment .
 
-#### Android Rider Build :
+#### Android Build :
 
     $ cd /path/to/your/android/source/root
 
