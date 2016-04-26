@@ -20,20 +20,34 @@ RUN apt-get update
 RUN apt-get dist-upgrade -y
 
 # Installing packages
-RUN apt-get -y install software-properties-common
-RUN apt-get -y install bzip2 unzip openssh-client git curl zip wget
-RUN apt-get -y install lib32stdc++6 lib32z1 lib32ncurses5 lib32bz2-1.0 --no-install-recommends
-RUN apt-get -y install libxslt-dev libxml2-dev
-RUN apt-get -y install build-essential
-
-# Update apt
-RUN apt-add-repository ppa:openjdk-r/ppa
-RUN apt-get update
+RUN apt-get -y install \
+  build-essential \
+  bzip2 \
+  curl \
+  git \
+  lib32stdc++6 \
+  lib32z1 \
+  lib32ncurses5 \
+  lib32bz2-1.0 \
+  libxslt-dev \
+  libxml2-dev \
+  openssh-client \
+  software-properties-common \
+  unzip \
+  wget \
+  zip \
+  --no-install-recommends
 
 # Install Java
+RUN apt-add-repository ppa:openjdk-r/ppa
+RUN apt-get update
 RUN apt-get -y install openjdk-8-jdk
 
-# Install android sdk
+# Clean Up Apt-get
+RUN rm -rf /var/lib/apt/lists/*
+RUN apt-get clean
+
+# Install Android SDK
 RUN wget https://dl.google.com/android/android-sdk_r24.4.1-linux.tgz
 RUN tar -xvzf android-sdk_r24.4.1-linux.tgz
 RUN mv android-sdk-linux /usr/local/android-sdk
@@ -64,6 +78,7 @@ ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64/
 # Support Gradle
 ENV TERM dumb
 ENV JAVA_OPTS "-Xms512m -Xmx1024m"
+ENV GRADLE_OPTS "-XX:+UseG1GC -XX:MaxGCPauseMillis=1000"
 
 # Cleaning
 RUN apt-get clean
