@@ -87,7 +87,7 @@ RUN apt-get clean
 ENV RUN_USER mobileci
 ENV RUN_UID 1000
 
-RUN adduser --uid "$RUN_UID" \
+RUN id $RUN_USER || adduser --uid "$RUN_UID" \
     --gecos 'Build User' \
     --shell '/bin/sh' \
     --disabled-login \
