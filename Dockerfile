@@ -27,6 +27,7 @@ RUN apt-get -y install \
   git \
   lib32stdc++6 \
   lib32z1 \
+  lib32z1-dev \
   lib32ncurses5 \
   lib32bz2-1.0 \
   libxslt-dev \
@@ -56,7 +57,7 @@ RUN rm android-sdk_r24.4.1-linux.tgz
 ENV ANDROID_COMPONENTS tools,platform-tools,android-23,build-tools-23.0.2
 
 # Install Android tools
-RUN ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | /usr/local/android-sdk/tools/android update sdk --filter "${ANDROID_COMPONENTS}" --no-ui -a
+RUN ( sleep 5 && while [ 1 ]; do sleep 1; echo y | /usr/local/android-sdk/tools/android update sdk --filter "${ANDROID_COMPONENTS}" --no-ui -a ; done )
 
 # Install Android NDK
 RUN wget https://dl.google.com/android/ndk/android-ndk-r9d-linux-x86_64.tar.bz2
