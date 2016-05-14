@@ -54,7 +54,7 @@ RUN tar -xvzf android-sdk_r24.4.1-linux.tgz
 RUN mv android-sdk-linux /usr/local/android-sdk
 RUN rm android-sdk_r24.4.1-linux.tgz
 
-ENV ANDROID_COMPONENTS tools,platform-tools,android-23,build-tools-23.0.2
+ENV ANDROID_COMPONENTS platform-tools,android-23,build-tools-23.0.2
 
 # Install Android tools
 RUN ( sleep 5 && while [ 1 ]; do sleep 1; echo y | /usr/local/android-sdk/tools/android update sdk --filter "${ANDROID_COMPONENTS}" --no-ui -a ; done )
@@ -71,6 +71,7 @@ ENV ANDROID_SDK_HOME $ANDROID_HOME
 ENV ANDROID_NDK_HOME /usr/local/android-ndk
 ENV PATH $PATH:$ANDROID_SDK_HOME/tools
 ENV PATH $PATH:$ANDROID_SDK_HOME/platform-tools
+ENV PATH $PATH:$ANDROID_SDK_HOME/build-tools/23.0.2
 ENV PATH $PATH:$ANDROID_NDK_HOME
 
 # Export JAVA_HOME variable
