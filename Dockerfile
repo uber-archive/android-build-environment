@@ -57,7 +57,7 @@ RUN rm android-sdk_r24.4.1-linux.tgz
 ENV ANDROID_COMPONENTS platform-tools,android-23,build-tools-23.0.2
 
 # Install Android tools
-RUN ( sleep 5 && while [ 1 ]; do sleep 1; echo y | /usr/local/android-sdk/tools/android update sdk --filter "${ANDROID_COMPONENTS}" --no-ui -a ; done )
+RUN echo y | /usr/local/android-sdk/tools/android update sdk --filter "${ANDROID_COMPONENTS}" --no-ui -a
 
 # Install Android NDK
 RUN wget https://dl.google.com/android/ndk/android-ndk-r9d-linux-x86_64.tar.bz2
