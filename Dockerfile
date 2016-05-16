@@ -87,7 +87,7 @@ RUN apt-get clean
 
 # Add build user account, values are set to default below
 ENV RUN_USER mobileci
-ENV RUN_UID 1000
+ENV RUN_UID 5089
 
 RUN id $RUN_USER || adduser --uid "$RUN_UID" \
     --gecos 'Build User' \
