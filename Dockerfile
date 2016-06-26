@@ -75,10 +75,10 @@ ENV ANDROID_COMPONENTS platform-tools,android-23,android-24,build-tools-23.0.2,b
 RUN echo y | /usr/local/android-sdk/tools/android update sdk --filter "${ANDROID_COMPONENTS}" --no-ui -a
 
 # Install Android NDK
-RUN wget https://dl.google.com/android/ndk/android-ndk-r9d-linux-x86_64.tar.bz2
-RUN tar -xvjf android-ndk-r9d-linux-x86_64.tar.bz2
-RUN mv android-ndk-r9d /usr/local/android-ndk
-RUN rm android-ndk-r9d-linux-x86_64.tar.bz2
+RUN wget http://dl.google.com/android/repository/android-ndk-r12-linux-x86_64.zip
+RUN unzip android-ndk-r12-linux-x86_64.zip
+RUN mv android-ndk-r12 /usr/local/android-ndk
+RUN rm android-ndk-r12-linux-x86_64.zip
 
 # Install Infer
 # Install OPAM
@@ -121,7 +121,8 @@ ENV INFER_HOME /infer/infer
 ENV PATH ${INFER_HOME}/bin:${PATH}
 ENV PATH $PATH:$ANDROID_SDK_HOME/tools
 ENV PATH $PATH:$ANDROID_SDK_HOME/platform-tools
-ENV PATH $PATH:$ANDROID_SDK_HOME/build-tools/23.0.2:$ANDROID_SDK_HOME/build-tools/24.0.0
+ENV PATH $PATH:$ANDROID_SDK_HOME/build-tools/23.0.2
+ENV PATH $PATH:$ANDROID_SDK_HOME/build-tools/24.0.0
 ENV PATH $PATH:$ANDROID_NDK_HOME
 
 # Export JAVA_HOME variable
