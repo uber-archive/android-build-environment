@@ -20,23 +20,38 @@ RUN apt-get update
 RUN apt-get dist-upgrade -y
 
 # Installing packages
-RUN apt-get -y install \
+RUN apt-get install -y \
+  autoconf \
   build-essential \
   bzip2 \
   curl \
+  gcc \
   git \
+  groff \
   lib32stdc++6 \
   lib32z1 \
   lib32z1-dev \
   lib32ncurses5 \
   lib32bz2-1.0 \
+  libc6-dev \
+  libgmp-dev \
+  libmpc-dev \
+  libmpfr-dev \
   libxslt-dev \
   libxml2-dev \
+  m4 \
+  make \
+  ncurses-dev \
+  ocaml \
   openssh-client \
+  pkg-config \
+  python-software-properties \
+  rsync \
   software-properties-common \
   unzip \
   wget \
   zip \
+  zlib1g-dev \
   --no-install-recommends
 
 # Install Java
@@ -54,7 +69,7 @@ RUN tar -xvzf android-sdk_r24.4.1-linux.tgz
 RUN mv android-sdk-linux /usr/local/android-sdk
 RUN rm android-sdk_r24.4.1-linux.tgz
 
-ENV ANDROID_COMPONENTS platform-tools,android-23,build-tools-23.0.2
+ENV ANDROID_COMPONENTS platform-tools,android-23,android-24,build-tools-23.0.2,build-tools-24.0.0
 
 # Install Android tools
 RUN echo y | /usr/local/android-sdk/tools/android update sdk --filter "${ANDROID_COMPONENTS}" --no-ui -a
@@ -65,13 +80,48 @@ RUN tar -xvjf android-ndk-r9d-linux-x86_64.tar.bz2
 RUN mv android-ndk-r9d /usr/local/android-ndk
 RUN rm android-ndk-r9d-linux-x86_64.tar.bz2
 
+# Install Infer
+# Install OPAM
+RUN VERSION=1.2.2; \
+    curl -sL \
+      https://github.com/ocaml/opam/releases/download/$VERSION/opam-$VERSION-x86_64-Linux \
+      -o /usr/local/bin/opam && \
+    chmod 755 /usr/local/bin/opam && \
+    ((/usr/local/bin/opam --version | grep -q $VERSION) || \
+     (echo "failed to download opam from GitHub."; exit 1))
+RUN opam init -y --comp=4.02.3
+
+# Download the latest Infer release
+RUN INFER_VERSION=v0.8.1; \
+    cd /opt && \
+    curl -sL \
+      https://github.com/facebook/infer/releases/download/${INFER_VERSION}/infer-linux64-${INFER_VERSION}.tar.xz | \
+    tar xJ && \
+    rm -f /infer && \
+    ln -s ${PWD}/infer-linux64-$INFER_VERSION /infer
+
+# Install opam dependencies
+RUN cd /infer && \
+    eval $(opam config env) && \
+    opam update && \
+    opam pin add --yes --no-action infer . && \
+    opam install --deps-only infer
+
+# Compile Infer
+RUN cd /infer && \
+    eval $(opam config env) && \
+    ./build-infer.sh
+
 # Environment variables
 ENV ANDROID_HOME /usr/local/android-sdk
 ENV ANDROID_SDK_HOME $ANDROID_HOME
 ENV ANDROID_NDK_HOME /usr/local/android-ndk
+ENV JENKINS_HOME $HOME
+ENV INFER_HOME /infer/infer
+ENV PATH ${INFER_HOME}/bin:${PATH}
 ENV PATH $PATH:$ANDROID_SDK_HOME/tools
 ENV PATH $PATH:$ANDROID_SDK_HOME/platform-tools
-ENV PATH $PATH:$ANDROID_SDK_HOME/build-tools/23.0.2
+ENV PATH $PATH:$ANDROID_SDK_HOME/build-tools/23.0.2:$ANDROID_SDK_HOME/build-tools/24.0.0
 ENV PATH $PATH:$ANDROID_NDK_HOME
 
 # Export JAVA_HOME variable
