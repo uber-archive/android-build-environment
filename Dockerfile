@@ -80,44 +80,11 @@ RUN unzip android-ndk-r12-linux-x86_64.zip
 RUN mv android-ndk-r12 /usr/local/android-ndk
 RUN rm android-ndk-r12-linux-x86_64.zip
 
-# Install Infer
-# Install OPAM
-RUN VERSION=1.2.2; \
-    curl -sL \
-      https://github.com/ocaml/opam/releases/download/$VERSION/opam-$VERSION-x86_64-Linux \
-      -o /usr/local/bin/opam && \
-    chmod 755 /usr/local/bin/opam && \
-    ((/usr/local/bin/opam --version | grep -q $VERSION) || \
-     (echo "failed to download opam from GitHub."; exit 1))
-RUN opam init -y --comp=4.02.3
-
-# Download the latest Infer release
-RUN INFER_VERSION=v0.8.1; \
-    cd /opt && \
-    curl -sL \
-      https://github.com/facebook/infer/releases/download/${INFER_VERSION}/infer-linux64-${INFER_VERSION}.tar.xz | \
-    tar xJ && \
-    rm -f /infer && \
-    ln -s ${PWD}/infer-linux64-$INFER_VERSION /infer
-
-# Install opam dependencies
-RUN cd /infer && \
-    eval $(opam config env) && \
-    opam update && \
-    opam pin add --yes --no-action infer . && \
-    opam install --deps-only infer
-
-# Compile Infer
-RUN cd /infer && \
-    eval $(opam config env) && \
-    ./build-infer.sh
-
 # Environment variables
 ENV ANDROID_HOME /usr/local/android-sdk
 ENV ANDROID_SDK_HOME $ANDROID_HOME
 ENV ANDROID_NDK_HOME /usr/local/android-ndk
 ENV JENKINS_HOME $HOME
-ENV INFER_HOME /infer/infer
 ENV PATH ${INFER_HOME}/bin:${PATH}
 ENV PATH $PATH:$ANDROID_SDK_HOME/tools
 ENV PATH $PATH:$ANDROID_SDK_HOME/platform-tools
