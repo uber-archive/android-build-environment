@@ -15,7 +15,6 @@ ENV DOCKER_ANDROID_DISPLAY_NAME mobileci-docker
 ENV DEBIAN_FRONTEND noninteractive
 
 # Update apt-get
-RUN rm -rf /var/lib/apt/lists/*
 RUN apt-get update
 RUN apt-get dist-upgrade -y
 
