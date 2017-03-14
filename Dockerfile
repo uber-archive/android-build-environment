@@ -64,10 +64,10 @@ RUN rm -rf /var/lib/apt/lists/*
 RUN apt-get clean
 
 # Install Android SDK
-RUN wget https://dl.google.com/android/android-sdk_r24.4.1-linux.tgz
-RUN tar -xvzf android-sdk_r24.4.1-linux.tgz
-RUN mv android-sdk-linux /usr/local/android-sdk
-RUN rm android-sdk_r24.4.1-linux.tgz
+RUN wget https://dl.google.com/android/android-sdk_r24.4.1-linux.tgz \
+  && tar -xvzf android-sdk_r24.4.1-linux.tgz \
+  && mv android-sdk-linux /usr/local/android-sdk \
+  && rm android-sdk_r24.4.1-linux.tgz
 
 ENV ANDROID_COMPONENTS platform-tools,android-23,build-tools-23.0.2,build-tools-24.0.0
 
