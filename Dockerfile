@@ -97,9 +97,6 @@ ENV TERM dumb
 ENV JAVA_OPTS "-Xms4096m -Xmx4096m"
 ENV GRADLE_OPTS "-XX:+UseG1GC -XX:MaxGCPauseMillis=1000"
 
-# Cleaning
-RUN apt-get clean
-
 # Add build user account, values are set to default below
 ENV RUN_USER mobileci
 ENV RUN_UID 5089
