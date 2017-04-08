@@ -39,4 +39,4 @@ Then connect to your VPN and restart the docker vm:
 	$ docker-machine start default
 	$ eval "$(docker-machine env default)"
 
-[Read more](http://olympia.readthedocs.org/en/latest/topics/development/vpn.html)
+
