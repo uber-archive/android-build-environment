@@ -93,7 +93,7 @@ RUN wget https://dl.google.com/android/android-sdk_r24.4.1-linux.tgz \
   && chmod -R a+rx $ANDROID_HOME \
   && rm android-sdk_r24.4.1-linux.tgz
 
-ENV ANDROID_COMPONENTS platform-tools,android-24,build-tools-25.0.2,extra-android-m2repository
+ENV ANDROID_COMPONENTS platform-tools,android-24,build-tools-25.0.2,extra-android-m2repository,extra-google-m2repository
 
 # Install Android tools
 RUN echo y | /usr/local/android-sdk/tools/android update sdk --filter "${ANDROID_COMPONENTS}" --no-ui -a \
