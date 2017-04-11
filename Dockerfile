@@ -15,15 +15,11 @@ ENV DOCKER_ANDROID_DISPLAY_NAME mobileci-docker
 ENV DEBIAN_FRONTEND noninteractive
 
 # Updating & Installing packages
-RUN apt-get update \
-  && apt-get dist-upgrade -y \
-  && apt-get install -y \
+RUN apt-get update && apt-get install -y \
+    wget \
     autoconf \
     build-essential \
     bzip2 \
-    curl \
-    gcc \
-    git \
     groff \
     lib32stdc++6 \
     lib32z1 \
@@ -46,7 +42,6 @@ RUN apt-get update \
     rsync \
     software-properties-common \
     unzip \
-    wget \
     zip \
     zlib1g-dev \
     --no-install-recommends \
@@ -63,14 +58,12 @@ RUN apt-add-repository ppa:openjdk-r/ppa \
 # Environment variables
 ENV ANDROID_HOME /usr/local/android-sdk
 ENV ANDROID_SDK_HOME $ANDROID_HOME
-ENV ANDROID_NDK_HOME /usr/local/android-ndk
 ENV JENKINS_HOME $HOME
 ENV PATH ${INFER_HOME}/bin:${PATH}
 ENV PATH $PATH:$ANDROID_SDK_HOME/tools
 ENV PATH $PATH:$ANDROID_SDK_HOME/platform-tools
 ENV PATH $PATH:$ANDROID_SDK_HOME/build-tools/23.0.2
 ENV PATH $PATH:$ANDROID_SDK_HOME/build-tools/24.0.0
-ENV PATH $PATH:$ANDROID_NDK_HOME
 
 # Export JAVA_HOME variable
 ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64/
@@ -99,14 +92,6 @@ ENV ANDROID_COMPONENTS platform-tools,android-24,build-tools-25.0.2,extra-androi
 RUN echo y | /usr/local/android-sdk/tools/android update sdk --filter "${ANDROID_COMPONENTS}" --no-ui -a \
   && chown -R $RUN_USER:$RUN_USER $ANDROID_HOME \
   && chmod -R a+rx $ANDROID_HOME
-
-# Install Android NDK
-RUN wget http://dl.google.com/android/repository/android-ndk-r12-linux-x86_64.zip \
-  && unzip android-ndk-r12-linux-x86_64.zip \
-  && mv android-ndk-r12 /usr/local/android-ndk \
-  && chown -R $RUN_USER:$RUN_USER $ANDROID_NDK_HOME \
-  && chmod -R a+rx $ANDROID_NDK_HOME \
-  && rm android-ndk-r12-linux-x86_64.zip
 
 # Support Gradle
 ENV TERM dumb
