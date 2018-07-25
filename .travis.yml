@@ -4,4 +4,4 @@ services:
   - docker
 
 script:
-  - docker build --quiet=true -t uber/android-build-environment .
+  - docker build --quiet=true -t alrosot/android-build-environment .

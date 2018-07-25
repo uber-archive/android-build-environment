@@ -1,3 +1,5 @@
+[![](https://images.microbadger.com/badges/image/alrosot/android-build-environment.svg)](https://microbadger.com/images/alrosot/android-build-environment "Get your own image badge on microbadger.com")
+
 Android Build on Docker Container
 ===
 
@@ -39,4 +41,4 @@ Then connect to your VPN and restart the docker vm:
 	$ docker-machine start default
 	$ eval "$(docker-machine env default)"
 
-[Read more](http://olympia.readthedocs.org/en/latest/topics/development/vpn.html)
+
