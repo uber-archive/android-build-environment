@@ -1,3 +1,5 @@
+[![](https://images.microbadger.com/badges/image/alrosot/android-build-environment.svg)](https://microbadger.com/images/alrosot/android-build-environment "Get your own image badge on microbadger.com")
+
 Android Build on Docker Container
 ===
 
